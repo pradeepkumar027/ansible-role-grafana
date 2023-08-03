@@ -1,0 +1,31 @@
+---
+# tasks file for grafana
+- name: add grafana gpg key
+  rpm_key:
+    key: "{{ grafana_yum_gpg_key }}"
+    state: present
+- name: configure yum repository for grafana
+  yum_repository:
+    name: Grafana
+    description: Grafana
+    enabled: true
+    gpgcheck: "{{ grafana_yum_gpg_check }}"
+    baseurl: "{{ grafana_yum_repo_url }}"
+    gpgkey: "{{ grafana_yum_gpg_key }}"
+    exclude: "*beta*"
+- name: install grafana
+  package:
+    name: grafana
+    state: present
+- name: start and enable grafana
+  service:
+    name: grafana-server
+    state: started
+    enabled: true
+- name: enable port 3000 for grafana
+  ansible.posix.firewalld:
+    port: 3000/tcp
+    state: enabled
+    permanent: true
+    immediate: true
+  when: firewalld_enabled

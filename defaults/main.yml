@@ -1,0 +1,6 @@
+---
+# defaults file for grafana
+grafana_yum_gpg_key: https://rpm.grafana.com/gpg.key
+grafana_yum_repo_url: https://rpm.grafana.com
+grafana_yum_gpg_check: true
+firewalld_enabled: false
